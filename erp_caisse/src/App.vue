@@ -8,7 +8,8 @@
 
     <hr>
     <Cart
-      :cartList="userCart"/>
+      :cartList="userCart"
+      v-on:dropArticle="dropArticle"/>
   </div>
 </template>
 
@@ -20,7 +21,6 @@ export default {
   name: 'App',
   data() {
     return {
-
       userCart: [
         {
           article: {name: "snikers",prix: 10},
@@ -59,6 +59,10 @@ export default {
         }
       }
       this.userCart.push({article:spec,count: 1})
+    },
+    dropArticle(idx){
+      this.userCart.splice(idx,1)
+      this.$forceUpdate()
     }
   }
   

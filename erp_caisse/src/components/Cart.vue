@@ -4,12 +4,12 @@
         v-bind:key="art.article.name">
             <p> {{art.article.name}} :  {{art.count}} * {{art.article.prix}}€</p>
             <div>
-                <button>+</button>
-                <button>-</button>
-                <button>SUPPRIME FDP</button>
+                <button @click="addSome(art)">+</button>
+                <button @click="removeSome(art)">-</button>
+                <button @click="dropArticle(art)">SUPPRIME FDP</button>
             </div>
         </div>
-        <p> Total : {{total}} </p>
+        <p> Total : {{total}} €</p>
     </div>
 </template>
 
@@ -32,6 +32,21 @@ export default {
                 sum = sum + this.cartList[i].article.prix * this.cartList[i].count;
             }
             return sum;
+        }
+    },
+    methods: {
+        addSome(obj){
+            obj.count++;
+        },
+        removeSome(obj){
+            obj.count--;
+            if(obj.count <= 0)
+                this.dropArticle(obj);
+        },
+         
+        dropArticle(obj){
+            const idx = this.cartList.findIndex(item => item.article.name === obj.article.name )
+            this.$emit("dropArticle",idx)
         }
     }
 }
