@@ -1,18 +1,67 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ArticleComp 
+    v-for="art in articles"
+    v-bind:key="art.name"
+    :spec="art"
+    v-on:artClick="artClicked"/>
+
+    <hr>
+    <Cart
+      :cartList="userCart"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ArticleComp from './components/ArticleComponent.vue'
+import Cart from './components/Cart.vue'
 
 export default {
   name: 'App',
+  data() {
+    return {
+
+      userCart: [
+        {
+          article: {name: "snikers",prix: 10},
+          count: 10
+        }
+      ],
+      articles: [{
+        name: "snikers",
+        prix: 10
+        },
+        {
+          name: "julien",
+          prix: 40000
+        },
+        {
+          name: "l-word",
+          prix: 2
+        },
+        {
+          name: "n-pass",
+          prix: 100
+        }
+      ]
+    }
+  },
   components: {
-    HelloWorld
+    ArticleComp,
+    Cart
+  },
+  methods: {
+    artClicked(spec){
+      for(let i = 0; i < this.userCart.length; i++){
+        if (this.userCart[i].article.name == spec.name){
+          this.userCart[i].count++
+          return true;
+        }
+      }
+      this.userCart.push({article:spec,count: 1})
+    }
   }
+  
 }
 </script>
 
