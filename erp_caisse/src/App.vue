@@ -8,8 +8,11 @@
 
     <hr>
     <Cart
-      :cartList="userCart"
-      v-on:dropArticle="dropArticle"/>
+      :userCart="userCart"
+      v-on:dropArticle="dropArticle"
+      v-on:checkout="checkout"/>
+    
+    <span>Prix du panier validé : {{ paid }}</span>
   </div>
 </template>
 
@@ -21,12 +24,8 @@ export default {
   name: 'App',
   data() {
     return {
-      userCart: [
-        {
-          article: {name: "snikers",prix: 10},
-          count: 10
-        }
-      ],
+      paid: 0,
+      userCart: {total:0, cart:[]},
       articles: [{
         name: "snikers",
         prix: 10
@@ -52,17 +51,20 @@ export default {
   },
   methods: {
     artClicked(spec){
-      for(let i = 0; i < this.userCart.length; i++){
-        if (this.userCart[i].article.name == spec.name){
-          this.userCart[i].count++
+      for(let i = 0; i < this.userCart.cart.length; i++){
+        if (this.userCart.cart[i].article.name == spec.name){
+          this.userCart.cart[i].count++
           return true;
         }
       }
-      this.userCart.push({article:spec,count: 1})
+      this.userCart.cart.push({article:spec,count: 1})
     },
     dropArticle(idx){
-      this.userCart.splice(idx,1)
+      this.userCart.cart.splice(idx,1)
       this.$forceUpdate()
+    },
+    checkout(){
+      this.paid = this.userCart.total
     }
   }
   
