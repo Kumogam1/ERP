@@ -1,18 +1,30 @@
 <template>
   <div id="app">
-    <ArticleComp 
-    v-for="art in articles"
-    v-bind:key="art.name"
-    :spec="art"
-    v-on:artClick="artClicked"/>
+    <v-app>
+      <v-content>
+        <v-container fluid  fill-height>
+          <v-row>
+            <v-col cols="8">
+              <v-row>
+                <ArticleComp 
+                v-for="art in articles"
+                v-bind:key="art.name"
+                :spec="art"
+                v-on:artClick="artClicked"/>
+              </v-row>
+            </v-col>
 
-    <hr>
-    <Cart
-      :userCart="userCart"
-      v-on:dropArticle="dropArticle"
-      v-on:checkout="checkout"/>
-    
-    <span>Prix du panier validé : {{ paid }}</span>
+            <v-col cols="4">
+              <Cart
+                :userCart="userCart"
+                v-on:dropArticle="dropArticle"
+                v-on:checkout="checkout"/>
+            </v-col>
+          </v-row>
+          <span>Prix du panier validé : {{ paid }}</span>
+        </v-container>
+      </v-content>
+    </v-app>
   </div>
 </template>
 
@@ -21,6 +33,7 @@ import ArticleComp from './components/ArticleComponent.vue'
 import Cart from './components/Cart.vue'
 
 export default {
+
   name: 'App',
   data() {
     return {
@@ -67,17 +80,5 @@ export default {
       this.paid = this.userCart.total
     }
   }
-  
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

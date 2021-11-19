@@ -1,11 +1,16 @@
 <template>
-    <div> 
-        <p> {{ spec.name }}  </p>
-        <p> {{ spec.prix }}€  </p>
-        <button
-        @click="addArticle(spec)">Ajouter</button>
-        <hr>
-    </div>
+    <v-col  cols="3">
+        <v-card> 
+            <v-card-title>
+                {{ spec.name }}
+            </v-card-title>
+            <v-card-text>
+                <p> {{ spec.prix }}€  </p>
+                <v-btn @click="addArticle(spec)" block> Ajouter </v-btn>
+            </v-card-text>
+            <hr>
+        </v-card>
+    </v-col>
 </template>
 
 

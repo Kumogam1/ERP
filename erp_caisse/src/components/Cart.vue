@@ -1,17 +1,21 @@
 <template>
-    <div>
+    <v-card>
         <div v-for="art in userCart.cart"
         v-bind:key="art.article.name">
-            <p> {{art.article.name}} :  {{art.count}} * {{art.article.prix}}€</p>
-            <div>
-                <button @click="addSome(art)">+</button>
-                <button @click="removeSome(art)">-</button>
-                <button @click="dropArticle(art)">SUPPRIME FDP</button>
-                <button @click="validateCart"> Acheter</button>
-            </div>
+            <v-row>
+                <v-col cols="5">
+                    {{art.article.name}} : {{art.count}} * {{art.article.prix}}€
+                </v-col>
+                <v-col cols="7">
+                    <v-btn @click="addSome(art)">+</v-btn>
+                    <v-btn @click="removeSome(art)">-</v-btn>
+                    <v-btn @click="dropArticle(art)">SUPPRIME FDP</v-btn>
+                </v-col>
+            </v-row>
         </div>
         <p> Total : {{total}} €</p>
-    </div>
+        <v-btn @click="validateCart" block> Acheter</v-btn> 
+    </v-card>
 </template>
 
 
