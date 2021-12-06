@@ -13,7 +13,7 @@
 			absolute
 			temporary
 		>
-			<v-list nav class="overflow-y-auto" :max-height=cartHeight>
+			<v-list nav class="overflow-y-auto" :max-height=cartHeight*2>
 				<v-list-item-group v-model="selectedSet">
 					<v-list-item
 						v-for="item in products"
@@ -82,6 +82,8 @@
 			>
 				<template v-slot:activator="{ on, attrs }">
 					<v-btn block 
+						text
+						color="primary"
 						v-bind="attrs"
 						v-on="on">Valid</v-btn>
 				</template>
@@ -93,7 +95,7 @@
 						label="User ID" ></v-text-field>
 					
 					<v-btn
-						color="primary"
+						color="green"
 						text
 						@click="dialog = false"
 						block
@@ -101,7 +103,7 @@
 						Pay
 					</v-btn>
 					<v-btn
-						color="primary"
+						color="red"
 						text
 						@click="dialog = false"
 						block
@@ -163,7 +165,7 @@
 						:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
 						@click:append="show = !show"
 					></v-text-field>
-					<v-btn block> Valid </v-btn>
+					<v-btn block text color="primary"> Valid </v-btn>
 				</v-card-text>
 			</v-card>
 		</div>
@@ -201,7 +203,7 @@
 				<v-sheet class="pa-5">
 					Total : {{total}}
 				</v-sheet>
-				<v-btn block @click="clearCart"> CLEAR </v-btn>
+				<v-btn block @click="clearCart" color="red" text> CLEAR </v-btn>
 			</template>
 		</v-navigation-drawer>
 
