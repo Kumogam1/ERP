@@ -7,7 +7,7 @@
 			:products="products"
 			:usersData="usersData"
 		/>
-
+<!-- ***************************** MENU ********************** -->
 		<v-navigation-drawer
 			v-model="drawer"
 			absolute
@@ -44,7 +44,7 @@
 
 
 
-
+<!-- ***************************** SHOP ******************* -->
 		<div v-if="displaySet">
 			<v-list class="overflow-y-auto" :max-height=windHeight >
 				<v-list-item>
@@ -75,10 +75,44 @@
 				@click.stop="cart = !cart"
 				block elevation="0"><v-icon>mdi-cart-outline</v-icon></v-btn>
 			<v-sheet elevation="0" align="center"> TOTAL : {{total}}€</v-sheet>
-			<v-btn block>Valid</v-btn>
+
+			<v-dialog
+				v-model="dialog"
+				width="500"
+			>
+				<template v-slot:activator="{ on, attrs }">
+					<v-btn block 
+						v-bind="attrs"
+						v-on="on">Valid</v-btn>
+				</template>
+				<v-card class="overflow-y-auto">
+					<v-card-title>Log user - {{searchUser}}</v-card-title>
+					<v-text-field 
+						class="pa-10" 
+						v-model=searchUser
+						label="User ID" ></v-text-field>
+					
+					<v-btn
+						color="primary"
+						text
+						@click="dialog = false"
+						block
+					>
+						Pay
+					</v-btn>
+					<v-btn
+						color="primary"
+						text
+						@click="dialog = false"
+						block
+					>
+						Cancel
+					</v-btn>
+				</v-card>
+			</v-dialog>
+
 		</div>
-
-
+<!-- *************************** USERS LIST ******************* -->
 		<div v-else-if="selectedSet == products.length + 0">  
 			<v-card> 
 				<v-card-title> Users </v-card-title>
@@ -111,7 +145,8 @@
 				</v-expansion-panel>
 			</v-expansion-panels>
 		</div>
-		
+
+<!-- *********************** ADD MONEY ****************************** -->
 		<div v-else-if="selectedSet == products.length + 1">
 			<v-card>
 				<v-card-title>Add credit</v-card-title>
@@ -133,6 +168,7 @@
 			</v-card>
 		</div>
 
+<!-- ************************* CART ************************* -->
 
 		<v-navigation-drawer
 			v-model="cart"
@@ -147,7 +183,17 @@
 						v-bind:key="item.name">
 						{{item.article.name}} 
 						<v-spacer></v-spacer>
+						<v-btn fab elevation="0" x-small class="mr-2"
+							@click="addSome(item)"
+						>
+							<v-icon>mdi-plus-thick</v-icon>
+						</v-btn>
 						{{item.count}}
+						<v-btn fab elevation="0" x-small class="ml-2"
+							@click="removeSome(item)"
+						>
+							<v-icon>mdi-minus-thick</v-icon>
+						</v-btn>
 					</v-list-item>
 				</v-list-item-group>
 			</v-list>
@@ -183,6 +229,7 @@ export default {
 			show: false,
 			drawer: false,
 			cart: false,
+			dialog: false,
 			windHeight: window.innerHeight - 150,
 			products: jsonData.products,
 			usersData: jsonData.usersData,
@@ -205,6 +252,7 @@ export default {
 				{ text: 'Transaction', value: 'transactionContent' },
 			],
 			searchInput:"",
+			searchUser:"",
 		}
 	},
 	computed: {
@@ -238,12 +286,32 @@ export default {
 		users: function(){
 			return this.usersData.filter(e => e.username.includes(this.searchInput))
 		},
+		foundUser: function(){
+			let res = this.usersData.filter(e => e.id.includes(this.searchInput))
+			if (res.length == 1)
+				return "User found."
+			else 
+				return "Not found"
+		}
 	},
 	components: {
 		Desktop
 	},
 
 	methods: {
+		addSome(obj){
+            obj.count++;
+        },
+        removeSome(obj){
+            obj.count--;
+            if(obj.count <= 0)
+                this.dropArticle(obj);
+        },
+		dropArticle(obj){
+            const idx = this.userCart.cart.findIndex(item => item.article.name === obj.article.name )
+            this.userCart.cart.splice(idx,1)
+			this.$forceUpdate()
+        },
 		addArt(item){
 			console.log(item.name)
 			for(let i = 0; i < this.userCart.cart.length; i++){
