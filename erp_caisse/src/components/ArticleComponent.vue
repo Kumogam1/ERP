@@ -1,12 +1,12 @@
 <template>
     <v-col  cols="3">
-        <v-card> 
+        <v-card class="d-flex flex-column" > 
             <v-card-title>
                 {{ spec.name }}
             </v-card-title>
             <v-card-text>
                 <p> {{ spec.prix }}€  </p>
-                <v-btn @click="addArticle(spec)" block> Ajouter </v-btn>
+                <v-btn @click="addArticle(spec)" block> Add </v-btn>
             </v-card-text>
             <hr>
         </v-card>

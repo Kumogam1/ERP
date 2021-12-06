@@ -1,159 +1,148 @@
 <!-- style="background-color: #bbff00;" -->
 <template>
   <div id="app">
-    <v-app>
-		<v-row> 
-		<v-col cols ="1">
-			<v-navigation-drawer
-				permanent
-			>
-				<v-list>
-					<v-list-item-group  v-model="selectedSet">
-						<v-list-item 
-							v-for="item in products"
-							v-bind:key="item.name"
-							@click="displayShop = true;selectedPage = null"
-						>
-							<v-list-item-icon>
-								<v-icon x-large>{{ item.icon }}</v-icon>
-							</v-list-item-icon>
-							<v-list-item-content>
-								{{item.name}}
-							</v-list-item-content>
-						</v-list-item>
-					</v-list-item-group>
-				</v-list>
+	<v-app>
+		<Desktop
+		v-if="false "
+			:products="products"
+			:usersData="usersData"
+		/>
 
-				<v-divider></v-divider>
-				<v-list>
-					<v-list-item-group v-model="selectedPage">
-						<v-list-item @click="displayShop = false;selectedSet = null">
-							<v-list-item-icon>
-								<v-icon x-large>mdi-book-arrow-left-outline</v-icon>
-							</v-list-item-icon>
-							<v-list-item-content></v-list-item-content>
-						</v-list-item>
-						<v-list-item @click="displayShop = false;selectedSet = null">
-							<v-list-item-icon>
-								<v-icon x-large>mdi-account-circle-outline</v-icon>
-							</v-list-item-icon>
-							<v-list-item-content></v-list-item-content>
-						</v-list-item>
-						<v-list-item @click="displayShop = false;selectedSet = null">
-							<v-list-item-icon>
-								<v-icon x-large>mdi-plus-circle-outline</v-icon>
-							</v-list-item-icon>
-							<v-list-item-content></v-list-item-content>
-						</v-list-item>
-					</v-list-item-group>
-				</v-list>
-				
-			</v-navigation-drawer>
-		</v-col>
-		<v-col>
-			<Main
-				v-if="displayShop" 
-				:userCart="userCart"
-				:set="set"
-				v-on:dropArticle="dropArticle"
-				v-on:artClick="artClicked"
-				v-on:checkout="checkout"
-			/>
-		</v-col>
-		</v-row>
+		<v-navigation-drawer
+			v-model="drawer"
+			absolute
+			temporary
+		>
+			<v-list nav>
+				<v-list-item-group >
+					<v-list-item>
+						<v-list-item-title>Foo</v-list-item-title>
+					</v-list-item>
+				</v-list-item-group>
+			</v-list>
+		</v-navigation-drawer>
+		<v-app-bar-nav-icon 
+			class="pl-5"
+			@click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+		<v-list class="overflow-y-auto" :max-height=windHeight>
+			<v-list-item>
+
+			<v-row class="fill-height pa-5">
+				<v-col cols="4" 
+					class="pa-0"
+					v-for="item in products[0].articles"
+					v-bind:key="item.name"
+				>
+					<v-card 
+						outlined
+						exact
+						height="100%">
+						<v-card-title> {{item.name}}</v-card-title>
+						<v-card-text class="pl-5 font-light-black"> {{item.prix}}€</v-card-text>
+						<v-card-actions>
+							<v-btn 
+								block
+								@click="addArt(item)"> ADD </v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-col>
+			</v-row>
+			</v-list-item>
+		</v-list>
+		<v-spacer></v-spacer>
+		<v-btn 
+			@click.stop="cart = !cart"
+			block elevation="0"><v-icon>mdi-cart-outline</v-icon></v-btn>
+		<v-sheet elevation="0" align="center"> TOTAL : {{total}}€</v-sheet>
+		<v-btn block>Valider</v-btn>
+
+
+		<v-navigation-drawer
+			v-model="cart"
+			absolute
+			right
+			temporary
+		>
+			<v-list class="overflow-y-auto" :max-height=windHeight>
+				<v-list-item-group>
+					<v-list-item 
+						v-for="item in userCart.cart"
+						v-bind:key="item.name">
+						{{item.article.name}} 
+						<v-spacer></v-spacer>
+						{{item.count}}
+					</v-list-item>
+				</v-list-item-group>
+			</v-list>
+			<template v-slot:append>
+				<v-sheet class="pa-5">
+					Total : {{total}}
+				</v-sheet>
+			</template>
+		</v-navigation-drawer>
 	</v-app>
   </div>
 </template>
 
-<script>
-import Main from './components/Main.vue'
+<style>
+.v-btn {
+  width: 120x;
+  min-width: 120x;
+}
 
+</style>
+
+<script>
+
+import Desktop from './components/Desktop.vue'
+import jsonData from './assets/data.json'
 export default {
 
 	name: 'App',
 	data() {
 		return {
-			displayShop: true,
-			paid: 0,
+			drawer: false,
+			cart: false,
+			windHeight: window.innerHeight - 135,
+			products: jsonData.products,
+			usersData: jsonData.usersData,
 			userCart: {total:0, cart:[]},
-			selectedSet: 0,
-			selectedPage: null,
-			products: [
-				{
-					name: "set1",
-					icon : 'mdi-home',
-					articles: [
-						{name: "s1_art1",prix: 10},
-						{name: "s1_art2",prix: 10},
-						{name: "s1_art3",prix: 10},
-						{name: "s1_art4",prix: 10},
-						{name: "s1_art5",prix: 10},
-						{name: "s1_art6",prix: 10},
-						{name: "s1_art7",prix: 10},
-						{name: "s1_art8",prix: 10},
-						{name: "s1_art9",prix: 10},
-						{name: "s1_art10",prix: 10},
-						{name: "s1_art11",prix: 10},
-						{name: "s1_art12",prix: 10},
-						{name: "s1_art13",prix: 10},
-						{name: "s1_art14",prix: 10},
-						{name: "s1_art15",prix: 10},
-						{name: "s1_art16",prix: 10},
-						{name: "s1_art17",prix: 10},
-						{name: "s1_art18",prix: 10},
-						{name: "s1_art19",prix: 10},
-						{name: "s1_art20",prix: 10},
-						{name: "s1_art21",prix: 10},
-					]
-				},
-				{
-					name: "set2",
-					icon : 'mdi-alpha-e-circle-outline',
-					articles: [
-						{name: "s2_art1",prix: 10},
-						{name: "s2_art2",prix: 10},
-						{name: "s2_art3",prix: 10},
-						{name: "s2_art4",prix: 10},
-						{name: "s2_art5",prix: 10},
-						{name: "s2_art6",prix: 10},
-						{name: "s2_art7",prix: 10},
-						{name: "s2_art8",prix: 10},
-					]
-				}
-			],
 		}
 	},
 	computed: {
-		set: function(){
-			return this.products[this.selectedSet];
-		}
+		height () {
+			switch (this.$vuetify.breakpoint.name) {
+			case 'xs': return 220
+			case 'sm': return 400
+			case 'md': return 500
+			case 'lg': return 600
+			case 'xl': return 800
+			default : return 800
+			}
+		},
+		total: function () {
+            let sum = 0;
+            for(let i =0;i < this.userCart.cart.length; i++){
+				if (this.userCart.cart[i].type == "buy")
+					sum = sum + this.userCart.cart[i].article.prix * this.userCart.cart[i].count;
+            }
+            return sum;
+        }
 	},
 	components: {
-		Main
+		Desktop,
 	},
 
 	methods: {
-		addPanel(){
-			this.selectedSet = null
-			this.selectedSet = 0
-		},
-
-		artClicked(spec){
-			console.log(this.selectedSet)
+		addArt(item){
+			console.log(item.name)
 			for(let i = 0; i < this.userCart.cart.length; i++){
-				if (this.userCart.cart[i].article.name == spec.name){
+				if (this.userCart.cart[i].article.name == item.name){
 					this.userCart.cart[i].count++
 					return true;
 				}
 			}
-			this.userCart.cart.push({type:"buy",article:spec,count: 1})
-		},
-		dropArticle(idx){
-			this.userCart.cart.splice(idx,1)
-			this.$forceUpdate()
-		},
-		checkout(){
-			this.paid = this.userCart.total
+			this.userCart.cart.push({type:"buy",article:item,count: 1})
 		}
 	}
 };

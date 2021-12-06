@@ -1,0 +1,68 @@
+{"products": [
+	{
+		"name": "set1",
+		"icon" : "mdi-home",
+		"articles": [
+			{"name": "s1_art1","prix": 10},
+			{"name": "s1_art2","prix": 10},
+			{"name": "s1_art3","prix": 10},
+			{"name": "s1_art4","prix": 10},
+			{"name": "s1_art5","prix": 10},
+			{"name": "s1_art6","prix": 10},
+			{"name": "s1_art7","prix": 10},
+			{"name": "s1_art8","prix": 10},
+			{"name": "s1_art9","prix": 10},
+			{"name": "s1_art10","prix": 10},
+			{"name": "s1_art11","prix": 10},
+			{"name": "s1_art12","prix": 10},
+			{"name": "s1_art13","prix": 10},
+			{"name": "s1_art14","prix": 10},
+			{"name": "s1_art15","prix": 10},
+			{"name": "s1_art16","prix": 10},
+			{"name": "s1_art17","prix": 10},
+			{"name": "s1_art18","prix": 10},
+			{"name": "s1_art19","prix": 10},
+			{"name": "s1_art20","prix": 10},
+			{"name": "s1_art21","prix": 10}
+		]
+	},
+	{
+		"name": "set2",
+		"icon" : "mdi-alpha-e-circle-outline",
+		"articles": [
+			{"name": "s2_art1","prix": 10},
+			{"name": "s2_art2","prix": 10},
+			{"name": "s2_art3","prix": 10},
+			{"name": "s2_art4","prix": 10},
+			{"name": "s2_art5","prix": 10},
+			{"name": "s2_art6","prix": 10},
+			{"name": "s2_art7","prix": 10},
+			{"name": "s2_art8","prix": 10}
+		]
+	},
+	{
+		"name": "set3",
+		"icon" : "mdi-alpha-e-circle-outline",
+		"articles": [
+			{"name": "s3_art1","prix": 10},
+			{"name": "s3_arté","prix": 10},
+			{"name": "s3_art3","prix": 10},
+			{"name": "s3_art4","prix": 10},
+			{"name": "s3_art5","prix": 10},
+			{"name": "s3_art6","prix": 10},
+			{"name": "s3_art7","prix": 10},
+			{"name": "s3_art8","prix": 10}
+		]
+	}
+],
+"usersData": [
+	{"id":"u1","username":"name","credit":-10,"historic":[
+		{"transactionId":1,"date":"01/02/2021","transactionContent":-10},
+		{"transactionId":2,"date":"02/01/2021","transactionContent":10},
+		{"transactionId":3,"date":"01/01/2021","transactionContent":10},
+		{"transactionId":4,"date":"01/01/2022","transactionContent":10}
+	]},
+	{"id":"u2","username":"name","credit":10,"historic":[]},
+	{"id":"u3","username":"name","credit":10,"historic":[]},
+	{"id":"u4","username":"name","credit":10,"historic":[]}
+]}

@@ -31,7 +31,7 @@ import ArticleComp from './ArticleComponent.vue'
 import Cart from './Cart.vue'
 
 export default {
-	name: "Main",
+	name: "Shop",
     props: {
         userCart: Object,
 		set: Object
