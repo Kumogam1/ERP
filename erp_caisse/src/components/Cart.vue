@@ -1,21 +1,56 @@
 <template>
-    <v-card>
-        <div v-for="art in userCart.cart"
-        v-bind:key="art.article.name">
-            <v-row>
-                <v-col cols="5">
-                    {{art.article.name}} : {{art.count}} * {{art.article.prix}}€
-                </v-col>
-                <v-col cols="7">
-                    <v-btn @click="addSome(art)">+</v-btn>
-                    <v-btn @click="removeSome(art)">-</v-btn>
-                    <v-btn @click="dropArticle(art)">SUPPRIME FDP</v-btn>
-                </v-col>
-            </v-row>
-        </div>
-        <p> Total : {{total}} €</p>
-        <v-btn @click="validateCart" block> Acheter</v-btn> 
-    </v-card>
+    <!-- <div style="background-color: #ABBAEA"> -->
+        <v-card height="100%" class="d-flex flex-column"> 
+            <v-spacer></v-spacer>
+            <v-list class="overflow-y-auto" :max-height=windHeight>
+                <v-list-item-group
+                    color="primary"
+                >
+                    <v-list-item
+                    v-for="(item, i) in userCart.cart"
+                    :key="i"
+                    >
+                        <v-list-item-content>
+                            <v-row v-if='item.type == "buy"'>
+                                <v-col cols="6">
+                                    <span class="font-weight-black"> 
+										{{item.article.name}}
+									</span> 
+                                    <span class="font-weight-thin"> 
+										- {{item.article.prix}}€/u
+                                    <br/>
+										Quantity : {{item.count}} 
+									</span>
+                                    <br/>
+                                    Price : {{item.count*item.article.prix}} €
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-row>
+                                        <v-col cols="3" class="pl-0 pr-0">
+                                            <v-btn @click="addSome(item)" block>+</v-btn>
+                                        </v-col>
+                                        <v-col cols="3" class="pl-0 pr-0">
+                                            <v-btn @click="removeSome(item)" block>-</v-btn>
+                                        </v-col>
+                                        <v-col cols="3" class="pl-0 pr-0">
+                                            <v-btn @click="dropArticle(item)" block>Del</v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+            </v-list>
+			<p class="font-weight-black mt-5 ml-5"> 
+				Total : {{total}} €
+			</p>
+            <!-- <v-card-title> <p>Total : </p> </v-card-title> -->
+            <v-card-actions> 
+                <v-btn @click="validateCart" block> Valider </v-btn> 
+            </v-card-actions>
+        </v-card>
+    <!-- </div> -->
 </template>
 
 
@@ -23,7 +58,8 @@
 export default {
     name: "Cart",
     props: {
-        userCart: Object
+        userCart: Object,
+		windHeight: Number
     },
     data(){
         return {
@@ -34,7 +70,8 @@ export default {
         total: function () {
             let sum = 0;
             for(let i =0;i < this.userCart.cart.length; i++){
-                sum = sum + this.userCart.cart[i].article.prix * this.userCart.cart[i].count;
+				if (this.userCart.cart[i].type == "buy")
+					sum = sum + this.userCart.cart[i].article.prix * this.userCart.cart[i].count;
             }
             return sum;
         }
