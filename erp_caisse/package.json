@@ -37,8 +37,10 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {
-	}
+    "scripts": {
+      "start": "node your-script.js"
+    },
+    "rules": {}
   },
   "browserslist": [
     "> 1%",
